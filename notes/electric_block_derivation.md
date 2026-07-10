@@ -69,6 +69,15 @@ Any derivation must reproduce the magnetic block as the `B`-only limit: `Q = {4,
 axis `(1,1,-1)`. `src/utilities/electric_induced_action.py` checks this first (the anchor
 passes today); the electric block is the new content.
 
+## Equations are generated, not transcribed
+
+When the electric block and the covariant `(epsilon, mu^{-1})` form are derived, emit their
+LaTeX straight from the verified SymPy expressions (`sympy.latex()`) into
+`paper/sections/generated/*.tex` and `\input` them from the section files -- so the paper's
+equations are provably identical to what the verification script computed. The magnetic `Q`
+already does this (`write_latex_fragments()` -> `generated/magnetic_Q.tex`); the electric
+results follow the same route. See `CLAUDE.md` "SymPy-generated equations".
+
 ## Open questions
 
 1. Does a gauge-invariant electric loop exist on the bipartite lattice, or is the electric

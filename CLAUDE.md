@@ -99,6 +99,16 @@ agent treats `audit_table.tex` as the authority.
 - **Verification-script discipline.** Every audit row that claims a derived result names a
   `src/utilities/*.py` (or `exp_NN`) whose printed output backs it. `python audit_universe.py`
   is the roll-up. A claim without a runnable verifier cannot be `PASS`.
+- **SymPy-generated equations (use when it makes sense).** When a paper equation is a
+  *derived* symbolic result -- not definitional prose -- generate its LaTeX from the verifying
+  SymPy expression via `sympy.latex()` rather than hand-transcribing it. Emit the fragments to
+  auto-generated `paper/sections/generated/*.tex` files that the section `.tex` files
+  `\input`, so the paper's equations are provably identical to what the verification script
+  computed and cannot drift from it. (Same pattern the generator-zoo uses to emit its
+  catalogue table.) Apply judgment: this is for the load-bearing derived equations (the
+  magnetic `Q`, the electric block, the covariant `(epsilon, mu^{-1})` form), not every inline
+  symbol. `src/utilities/electric_induced_action.py::write_latex_fragments` is the working
+  exemplar (it emits the magnetic `Q`); the electric block follows the same route once derived.
 
 ## Documentation convention for code
 
