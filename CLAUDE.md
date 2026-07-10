@@ -1,46 +1,76 @@
 <!-- markdownlint-disable MD022 MD025 MD033 MD060 -->
 # CLAUDE.md -- Working Brief for Claude Code
 
-> Project: <PAPER SHORT TITLE>
+> Project: Paper VIII -- The Electric Induced-Action Block
 
 This file is the project memory for Claude Code. Keep it updated so a
 new conversation can continue work without the full chat history.
 
-The structure below is a starting point: replace the placeholder
-sections with project-specific content as the work develops, and keep
-the **CURRENT STATUS** block at the top up to date.
-
 ---
 
-## CURRENT STATUS (YYYY-MM-DD) -- vX.Y-DRAFT
+## CURRENT STATUS (2026-07-09) -- v0.1-DRAFT (scaffolded; derivation not started)
 
-One- or two-paragraph summary of where the project is right now:
+**Headline claim (to be earned):** the A=1 lattice has a well-defined *electric*
+induced-action block -- a permittivity `epsilon` and the covariant completion of the
+gauge response -- derivable from the tick rule, matching the already-exact *magnetic*
+block.
 
-- What the headline claim of the paper currently is.
-- What experiments / derivations are in progress vs.\ blocked.
-- Which audit-table rows are PASS / PART / STUB / FAIL.
-- What the next concrete action is (the smallest next step that
-  unsticks the project).
+**Why this paper exists.** Paper IV's gauge-sector photon-dispersion birefringence
+*verdict* cannot be rendered without it. The engine couples E and B **asymmetrically**:
+magnetic `B` is a spatial link phase -> clean Wilson-loop holonomy -> the exact
+magnetic `Q`-tensor (eigenvalues `{4,4,16}`, optical axis `(1,1,-1)`; Paper I App. B,
+reproduced by dcl-core `exp_04`). Electric `E` enters as an **on-site, mass-like**
+`delta_phi = omega + V(x)` -> there is **no electric Wilson-loop analog**. The covariant
+electric action block (the `epsilon`) exists in **neither Paper I nor Paper II**, and
+there is **no symmetry shortcut** (the framework establishes only spatial `O_h`, not the
+Lorentz boosts `K_a`, which are not in the discrete centralizer -- Paper II audit table).
+So the electric block is genuinely new theory. Discovered via Paper IV `exp_03a`
+(the static E+B cancellation screen, paper-04 commit `a238896`): magnetic response is
+**axis-enhanced**, electric **axis-suppressed** about `(1,1,-1)` -- opposite senses,
+suggestive of a cancellation, but density response is NOT the photon action, so it is
+not a verdict.
 
-Update this block whenever the answer to "what is the next action"
-changes.
+**Derivation method -- TBD (two candidates):**
+- **(a)** Paper I App. B's magnetic plaquette approach extended to the
+  electric/temporal-plaquette sector.
+- **(b)** an action-level spectral (`Tr ln T`) probe.
+
+**Audit rows:** the magnetic anchor is `PASS` (inherited/verified); the electric block,
+the covariant `(epsilon, mu^{-1})` completion, and the birefringence verdict are all
+`STUB`.
+
+**Next concrete action:** in `src/utilities/electric_induced_action.py`, reconstruct the
+magnetic `Q` from first principles (verify `{4,4,16}` -- the anchor already passes),
+then attempt method (a): build the temporal/electric plaquette holonomy and read off the
+electric quadratic form. If no clean holonomy exists (expected, per the on-site coupling),
+switch to method (b).
+
+**Scope gate:** this paper is HELD-upstream of Paper IV v1.0 (PM ruling 2026-07-09):
+Paper IV v1.0 waits on this verdict. Board issue #23 (project 6); blocks #13/#17/#18/#19.
 
 ---
 
 ## What This Project Is
 
-One paragraph framing of the framework or claim. The aim is to load
-enough context that a new agent can read the next two sentences of a
-section file and know what symbols mean.
+A symbolic-derivation paper (Paper VIII of the A=1 Discrete Causal Lattice series). It
+derives the electric sector of the lattice's induced gauge action -- the permittivity and
+the covariant `F_{mu nu} F^{mu nu}` completion -- so that the gauge-sector photon
+dispersion (and hence the birefringence verdict of Paper IV) becomes computable. Every
+claim is backed by a runnable sympy script under `src/utilities/` whose printed output the
+audit table cites; the magnetic `{4,4,16}` result is the built-in consistency anchor.
 
 ---
 
 ## Paper Title and Theme
 
-**Title:** <full title>
+**Title:** The Electric Induced-Action Block: Permittivity and the Covariant Completion
+of the Lattice Gauge Response.
 
-**Core theme / framing:** what the paper is *really* arguing. The
-title is for the reader; this is for future-you.
+**Core theme / framing:** the lattice gives magnetism a clean Wilson-loop but hands
+electricity an on-site mass-like coupling; completing the gauge response to a covariant
+`(epsilon, mu^{-1})` pair is the missing derivation that decides whether the lattice's
+vacuum birefringence cancels (framework consistent) or persists (a real tension). One
+derivation, a binary physical consequence.
 
 ---
 
@@ -48,76 +78,66 @@ title is for the reader; this is for future-you.
 
 | Row | Status | What it claims |
 |---|---|---|
-| <claim name> | STUB | <one-line description> |
+| Magnetic induced-action `Q`-tensor `{4,4,16}` (anchor) | PASS | Paper I App. B / dcl-core `exp_04`; `max\|Q - Paper_I_Q\| = 0` |
+| Electric induced-action block (permittivity `epsilon`) | STUB | the new derivation; no result yet |
+| Covariant completion / effective `(epsilon, mu^{-1})` | STUB | combine E and B sectors into one covariant form |
+| Gauge-sector birefringence verdict (axis split cancels vs persists) | STUB | downstream of the block; gates Paper IV #18/#17/#19 |
 
-Mirror of `paper/sections/audit_table.tex` -- update this table when
-the audit table changes. The claim auditor agent
-(`.claude/agents/claim-auditor.md`) treats `audit_table.tex` as the
-authority; this section is for quick orientation only.
+Mirror of `paper/sections/audit_table.tex` -- update both together. The claim-auditor
+agent treats `audit_table.tex` as the authority.
 
 ---
 
 ## Conventions
 
-- **Status legend.** `PASS` / `PART` / `STUB` / `FAIL` (defined in
-  the front-matter of `paper/main.tex`).
-- **File naming.** Sections: `paper/sections/<topic>.tex`. Figures:
-  `paper/figures/<name>.{tex,pdf,png}` with `.tex` fragment + binary
-  pair. Notes: `notes/<topic>.md`. Experiments:
+- **Status legend.** `PASS` / `PART` / `STUB` / `FAIL` (front-matter of `paper/main.tex`).
+- **File naming.** Sections: `paper/sections/<topic>.tex`. Notes: `notes/<topic>.md`.
+  Derivation/verification scripts: `src/utilities/<topic>.py`. Experiments (if any):
   `src/experiments/exp_NN_<name>.{py,md}`.
-- **Cross-references.** Always `\label{}` + `\ref{}` / `\autoref{}`,
-  never hard-coded numbers. Section labels: `sec:<name>`. Subsection:
-  `subsec:<name>`. Equation: `eq:<name>`. Figure: `fig:<name>`. Table:
-  `tab:<name>`. Theorem: `thm:<name>`.
-- **Bibliography.** All cites flow through `paper/paper-bib/references.bib`.
-  Style: `\bibliographystyle{unsrt}` (numeric, in citation order).
-- **LaTeX layout idioms.** `\nolinkurl{}` for paths, `\url{}` for URLs
-  inside `\href{}`. `longtable` for tables that may span pages.
-- **Experiments.** Each row in `paper/sections/audit_table.tex` whose
-  evidence cell names `exp_NN` is operationally defined by
-  `src/experiments/exp_NN_<name>.py`. The companion `.md` doc records
-  parameters, runtime, and what PASS/PART means for that row. The
-  master roll-up is `python audit_universe.py` (treats
-  `audit_table.tex` as authority, parses cached `data/*.log` for
-  PASS/FAIL -- does not re-execute experiments by default; opt-in
-  via `--run-quick` or `--run <exp_id>`); see `audit_universe.md`.
+- **Cross-references.** `\label{}` + `\ref{}`/`\autoref{}`, never hard-coded numbers.
+- **Bibliography.** `paper/paper-bib/references.bib`; `\bibliographystyle{unsrt}`.
+- **Verification-script discipline.** Every audit row that claims a derived result names a
+  `src/utilities/*.py` (or `exp_NN`) whose printed output backs it. `python audit_universe.py`
+  is the roll-up. A claim without a runnable verifier cannot be `PASS`.
 
 ## Documentation convention for code
 
-Every non-trivial line of physics/framework code should say what it
-**is** in the theory, not just what it does in the program. Name the
-mathematical object, cite the paper section/equation, and use "IS" for
-exact correspondences, "approximates" for continuum limits.
+Every non-trivial line of physics code says what it **is** in the theory, not just what it
+does in the program: name the mathematical object, cite the section/equation, use "IS" for
+exact correspondences and "approximates" for continuum limits.
 
 ---
 
 ## Release flow
 
-See `release_notes/README.md` for the full procedure. Summary:
-
-1. CI green on `main`.
-2. Update `CITATION.cff` (`version`, `date-released`).
-3. Draft `release_notes/vX.Y.md` and `release_notes/vX.Y-release-message.md`.
-4. **Deposit on Zenodo first** -- the DOI lands in the title-page
-   `\thanks{}` block and `CITATION.cff` *before* the release commit.
-5. Commit version bump (DOI included).
-6. Build final PDF, snapshot to `.stage/<DOC_TITLE>_vX.Y.pdf`
-   (durable per-version archive, gitignored).
-7. Tag `vX.Y`, push the tag.
-8. Create the GitHub Release using the release-message body.
+See `release_notes/README.md`. Summary: CI green -> update `CITATION.cff` -> draft
+`release_notes/vX.Y*.md` -> **Zenodo deposit first (DOI into `\thanks{}` + `CITATION.cff`)**
+-> commit -> tag -> GitHub Release.
 
 ---
 
 ## What NOT to Change
 
-- <load-bearing files / conventions to preserve>
+- The magnetic `{4,4,16}` anchor values -- they are inherited from Paper I App. B and are
+  the consistency check; if a derivation step breaks them, the step is wrong, not the anchor.
+- The audit table's role as canonical PASS/STUB authority.
 
 ---
 
-## Notes Index (important theoretical / scratchpad files)
+## Cross-references (series)
 
-`notes/README.md` -- conventions for notes/
+- **Paper I** (`dcl`, doi:10.5281/zenodo.20078529) -- App. B magnetic `Q`-tensor (anchor).
+- **Paper II** (`dcl-paper-02-sm-derivation`, doi:10.5281/zenodo.20292158) -- gauge structure;
+  `notes/induced_gauge_action_nonabelian.py` is the closest existing derivation to extend.
+- **Paper IV** (`dcl-paper-04-optical-axis-birefringence`) -- the downstream consumer; its
+  gauge verdict gates on this paper. See its `notes/exp_03_R4_cancellation_screen_spec.md`.
+- **dcl-core** (v0.3.0) -- `exp_04` (magnetic Q holonomy) is the numerical cross-check.
 
-(List individual notes here as they accumulate. Notes are durable
-working documents; the paper cites them indirectly via the audit
-table's evidence column.)
+---
+
+## Notes Index
+
+`notes/README.md` -- conventions for notes/.
+
+- `notes/electric_block_derivation.md` -- the derivation plan: the E/B asymmetry, why no
+  electric holonomy, the two method candidates, and the consistency anchor. Start here.

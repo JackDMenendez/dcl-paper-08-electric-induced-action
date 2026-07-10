@@ -1,119 +1,66 @@
-# Paper + Experiment Template (full-stack)
+# dcl-paper-08-electric-induced-action
 
-A starting scaffold for a research paper that ships with companion
-numerical experiments, derived from the *Geometry First* (A=1
-Discrete Causal Lattice) project's infrastructure. Use this when the
-paper's claims are operationally defined by code that runs and
-produces verifiable output. For pure-theory papers without
-experiments, use the paper-only sibling template instead.
+**Paper VIII of the A=1 Discrete Causal Lattice series.**
 
-## Click "Use this template" on GitHub
+Derives the **electric (permittivity) block of the lattice's induced gauge action** — the
+covariant completion the magnetic `{4,4,16}` Wilson-loop lacks — so that Paper IV's
+gauge-sector photon-dispersion birefringence *verdict* becomes computable. A sympy-verified
+symbolic derivation.
 
-This repo is configured as a GitHub Template Repository. From the
-GitHub web UI on the template's page, click **Use this template ->
-Create a new repository**, then `git clone` the new repo locally.
+## Why this paper exists
 
-## What you get
+The A=1 lattice couples the two electromagnetic fields **asymmetrically**:
 
-```
-.
-+-- paper/                        (LaTeX paper -- same shell as the paper-only template)
-|   +-- main.tex                 -- title page, front matter, section wiring
-|   +-- macros/                  -- packages.tex, commands.tex
-|   +-- sections/                -- placeholders + 1 exemplar (introduction.tex)
-|   |   +-- audit_table.tex      -- longtable seed, two example rows
-|   +-- figures/                 -- example_figure.tex fragment + README
-|   +-- paper-bib/references.bib -- BibTeX seed
-+-- src/
-|   +-- core/                    -- framework primitives (README only)
-|   +-- experiments/             -- one exemplar (exp_00_example.{py,md})
-|   |   +-- README.md            -- conventions
-|   |   +-- EXPERIMENTS.md       -- index of experiments
-|   |   +-- makefile             -- per-experiment make targets
-|   +-- utilities/               -- figure generators, verification scripts
-+-- tests/
-|   +-- test_example.py          -- exemplar pytest unit test
-+-- data/
-|   +-- README.md                -- data-file conventions
-+-- notes/                        -- working theoretical notes
-+-- release_notes/                -- per-version change log + Release body
-+-- .claude/agents/claim-auditor.md  -- read-only audit agent
-+-- audit_universe.py             -- master PASS/STUB/FAIL audit (parses audit_table.tex + data/*.log)
-+-- audit_universe.md             -- companion doc explaining the audit model
-+-- virtual-env-requirements.txt  -- Python dependencies (read by make env and by the wcde repo-setup.sh bootstrap)
-+-- CLAUDE.md                     -- project memory for Claude Code
-+-- CITATION.cff                  -- machine-readable citation
-+-- LICENSE                       -- MIT
-+-- makefile common.mak           -- root build (paper + tests + experiments)
-+-- build.sh build.cmd            -- platform wrappers around make
-+-- setup.sh setup.cmd            -- create venv + install requirements
-+-- .gitignore .gitattributes .gitmessage
-```
+- **Magnetic `B`** is a spatial link phase → a clean Wilson-loop holonomy → the exact
+  magnetic induced-action `Q`-tensor (eigenvalues `{4,4,16}`, optical axis `(1,1,-1)`;
+  Paper I Appendix B, reproduced by dcl-core `exp_04`).
+- **Electric `E`** enters as an **on-site, mass-like** phase advance `δφ = ω + V(x)` — so
+  there is **no electric Wilson-loop analog**.
 
-## First steps after creating your repo
+The covariant electric action block (the permittivity `ε`) appears in **neither Paper I nor
+Paper II**, and there is **no symmetry shortcut**: the framework establishes only the spatial
+point group `O_h`, not the Lorentz boosts that would fix `ε` from the magnetic `μ⁻¹`. So the
+electric block is genuinely new theory — this paper supplies it.
 
-1. **Search-and-replace the placeholders** in:
-   - `paper/main.tex` -- title, author, ORCID, email, repo URL
-   - `paper/macros/packages.tex` -- pdftitle, pdfauthor, pdfsubject,
-     pdfkeywords
-   - `CITATION.cff` -- title, author, ORCID, repo URL
-   - `LICENSE` -- year and copyright holder
-   - `CLAUDE.md` -- short title, current status block
-   - `README.md` (this file) -- replace with your project's own README
-2. **Set up the environment** (creates `.venv`, installs requirements):
-   ```sh
-   ./setup.sh                  # POSIX / MSYS2 UCRT64 on Windows
-   setup.cmd                   # Windows cmd / PowerShell
-   ```
-3. **Sanity-check the toolchain**:
-   ```sh
-   ./build.sh tests            # pytest against tests/
-   ./build.sh paper            # pdflatex 3-pass + bibtex
-   python -u src/experiments/exp_00_example.py
-   python audit_universe.py    # PASS/STUB/FAIL roll-up
-   ```
-4. **Replace the exemplars** with the first real piece of the paper:
-   - the introduction (`paper/sections/introduction.tex`)
-   - the first experiment (`src/experiments/exp_00_example.{py,md}`)
-   - the audit-table rows in `paper/sections/audit_table.tex`
-5. **Each new experiment** gets three things in lock-step: a row in
-   `paper/sections/audit_table.tex`, a `.py` script + `.md` companion
-   doc in `src/experiments/`, and an entry in `audit_universe.py` and
-   `src/experiments/EXPERIMENTS.md`. The `claim-auditor` agent under
-   `.claude/agents/` flags prose that drifts out of sync with the
-   audit table.
+The physical stake is binary: completing the response to a covariant `(ε, μ⁻¹)` pair decides
+whether the lattice's vacuum birefringence about `(1,1,-1)` **cancels** (framework consistent
+— predicts no gauge-sector birefringence) or **persists** (a real tension). A static screen in
+Paper IV (`exp_03a`) already hints at cancellation — magnetic axis-enhanced vs electric
+axis-suppressed — but density response is not the photon action, so the verdict waits on this
+derivation.
 
-## Build requirements
+## Method (TBD)
 
-- GNU Make >= 4.3 (the stock Windows port is too old; on Windows use
-  MSYS2 UCRT64 with `pacman -S make`).
-- Python 3 with `venv` (created by `setup.sh` / `setup.cmd`).
-- `pdflatex` + `bibtex` (TeX Live or MiKTeX).
+- **(a)** Paper I Appendix B's magnetic plaquette approach extended to the electric/temporal
+  plaquette sector.
+- **(b)** an action-level spectral (`Tr ln T`) probe.
 
-## Running experiments
+## Status
 
-A single experiment:
+`v0.1-DRAFT` — scaffolded; derivation not started. Start at
+[`notes/electric_block_derivation.md`](notes/electric_block_derivation.md) and
+[`src/utilities/electric_induced_action.py`](src/utilities/electric_induced_action.py) (which
+carries the magnetic `{4,4,16}` consistency anchor). Audit rows: magnetic anchor `PASS`;
+electric block, covariant completion, and birefringence verdict `STUB`.
+
+## Series context
+
+- **Paper I** (`dcl`) — the magnetic `Q`-tensor anchor (App. B).
+- **Paper II** (`dcl-paper-02-sm-derivation`) — gauge structure; closest existing derivation
+  to extend (`notes/induced_gauge_action_nonabelian.py`).
+- **Paper IV** (`dcl-paper-04-optical-axis-birefringence`) — the downstream consumer; its
+  gauge verdict (and, by decision, its v1.0) gates on this paper. Board issue **#23** (project 6).
+
+## Build / test
+
 ```sh
-python -u src/experiments/exp_00_example.py
+setup.cmd            # create .venv + install sympy/numpy/scipy/pytest + dcl_core@v0.3.0
+build.cmd tests      # pytest
+python -u src/utilities/electric_induced_action.py   # magnetic anchor check + electric stub
+python audit_universe.py                             # PASS/STUB/FAIL roll-up
+build.cmd paper      # pdflatex 3-pass + bibtex
 ```
-
-The whole suite, with PASS/STUB/FAIL summary:
-```sh
-python audit_universe.py
-```
-
-The `make experiments` target delegates to `src/experiments/makefile`
-where individual targets (`make -C src/experiments exp_NN`) are wired
-up. Many experiments take hours to days to run -- prefer named
-targets to the suite-level `all`.
-
-## Release flow
-
-See `release_notes/README.md`. Short version: deposit on Zenodo
-first to get the DOI, *then* commit the version bump. The DOI is part
-of the title-page `\thanks{}` block and `CITATION.cff`.
 
 ## License
 
-Paper text and figures: CC BY 4.0.
-Source (this scaffolding): MIT (see `LICENSE`).
+Paper text and figures: CC BY 4.0. Source (scripts and infrastructure): MIT (see `LICENSE`).

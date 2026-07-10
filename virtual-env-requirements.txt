@@ -1,8 +1,11 @@
 numpy
+scipy
+sympy
 matplotlib
 pytest
 
-# Pin specific versions in a separate file (e.g. requirements.lock.txt)
-# once the environment is stable.  Add other dependencies as the project
-# develops -- e.g. scipy, sympy, networkx, pandas, seaborn -- but keep
-# this file minimal so a fresh clone can install quickly.
+# dcl_core engine pin (v0.3.0: Peierls gauge coupling + calibration boundary).
+# Used only to cross-check the symbolic electric-block derivation against the
+# engine's magnetic Wilson-loop holonomy (the {4,4,16} anchor, exp_04). The
+# derivation itself is pure sympy; this pin is the consistency-check dependency.
+dcl_core @ git+https://github.com/JackDMenendez/dcl-core@v0.3.0

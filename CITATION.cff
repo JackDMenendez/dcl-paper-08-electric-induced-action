@@ -1,14 +1,38 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "Your Paper Title"
+title: "The Electric Induced-Action Block: Permittivity and the Covariant Completion of the Lattice Gauge Response"
 authors:
-  - family-names: Lastname
-    given-names: Firstname
-    orcid: "https://orcid.org/0000-0000-0000-0000"
-    affiliation: "Affiliation"
+  - family-names: Menendez
+    given-names: Jack
+    orcid: "https://orcid.org/0009-0003-1166-307X"
+    affiliation: "Independent Scholar (Eugene, OR)"
 version: v0.1-DRAFT
-date-released: YYYY-MM-DD
+date-released: 2026-07-09
 # At release time, fill in the Zenodo DOI assigned for this version:
 # doi: 10.5281/zenodo.XXXXXXXX
-repository-code: "https://github.com/USER/REPO"
+repository-code: "https://github.com/JackDMenendez/dcl-paper-08-electric-induced-action"
 license: MIT
+references:
+  - type: article
+    title: "Geometry First: Quantum Mechanics, Gravity, and the Origin of the Standard Model from a Single Conservation Law"
+    authors:
+      - family-names: Menendez
+        given-names: Jack
+    doi: 10.5281/zenodo.20078529
+    year: 2026
+    notes: "Paper I of the A=1 Discrete Causal Lattice series. Appendix B derives the magnetic induced-action Q-tensor (eigenvalues {4,4,16}, optical axis (1,1,-1)) that this paper (Paper VIII) takes as the consistency anchor while deriving the missing electric block."
+  - type: article
+    title: "Geometry Forces Physics: A Lie-Algebra Derivation of the Standard Model Gauge Group from a Single Conservation Law"
+    authors:
+      - family-names: Menendez
+        given-names: Jack
+    doi: 10.5281/zenodo.20292158
+    year: 2026
+    notes: "Paper II of the series. Reuses the magnetic Q for the gauge coupling ratio but contains no electric action block; this paper supplies it."
+  - type: article
+    title: "Optical-Axis Birefringence on the A=1 Discrete Causal Lattice"
+    authors:
+      - family-names: Menendez
+        given-names: Jack
+    year: 2026
+    notes: "Paper IV. Its gauge-sector photon-dispersion birefringence verdict is gated on the electric induced-action block derived here (Paper VIII)."

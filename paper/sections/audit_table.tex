@@ -47,20 +47,34 @@ derivations and experiments.  Status semantics in the front-matter
 \hline
 \endlastfoot
 
-% ── Example row 1 (replace with a real claim) ───────────────────────
-Example claim, fully derived
-    & One-line summary of the mechanism
-    & The standard / continuum statement it reduces to
-    & Derived analytically (\S\ref{subsec:cross_ref_example}, Eq.~\ref{eq:example_identity})
+% ── Anchor row (inherited; must not break) ──────────────────────────
+Magnetic induced-action tensor $Q=\{4,4,16\}$, axis $(1,1,-1)$
+    & $O(B^2)$ coefficient of the bipartite-plaquette Wilson-loop action
+    & Isotropic Maxwell $\mu^{-1}$ after $O_h$ averaging
+    & Paper~I App.~B; dcl-core \texttt{exp\_04} ($\max|Q-Q_{\mathrm{I}}|=0$);
+      \texttt{src/utilities/electric\_induced\_action.py} anchor check
     & \texttt{PASS} \\
 
-% ── Example row 2 (replace with a real claim) ───────────────────────
-Example claim, partial evidence
-    & One-line summary
-    & The target statement
-    & \texttt{exp\_XX}: describe the gap concretely (e.g.\ ``mechanism
-      reproduced; quantitative match pending higher-resolution run'')
-    & \texttt{PART} \\
+% ── Electric block (the new derivation) ─────────────────────────────
+Electric induced-action block (permittivity $\varepsilon$)
+    & On-site (mass-like) electric coupling; no Wilson-loop analogue --- derived directly
+    & Isotropic $\varepsilon$ after $O_h$ averaging (target)
+    & Derivation not started (\texttt{notes/electric\_block\_derivation.md}, methods a/b)
+    & \texttt{STUB} \\
+
+% ── Covariant completion ────────────────────────────────────────────
+Covariant completion: effective $(\varepsilon,\mu^{-1})$
+    & Combine electric and magnetic sectors into one covariant form
+    & Lorentz-covariant $F_{\mu\nu}F^{\mu\nu}$ in the continuum
+    & Pending the electric block above
+    & \texttt{STUB} \\
+
+% ── Downstream verdict (gates Paper IV) ─────────────────────────────
+Gauge-sector birefringence verdict about $(1,1,-1)$
+    & Does the axis contrast in the photon action cancel or persist?
+    & Absence of vacuum birefringence (if it cancels)
+    & Downstream of the covariant completion; gates Paper~IV (\#18/\#17/\#19)
+    & \texttt{STUB} \\
 
 \hline
 \end{longtable}
