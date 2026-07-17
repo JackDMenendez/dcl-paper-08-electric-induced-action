@@ -1,6 +1,15 @@
 <!-- markdownlint-disable MD022 MD025 MD033 MD060 -->
 # CLAUDE.md -- Working Brief for Claude Code
 
+> **⚰️ ARCHIVED / MERGED (2026-07-17).** Paper VIII has been **merged into Paper IV**
+> (`dcl-paper-04-optical-axis-birefringence`, board issue #13). This repo is read-only;
+> do **not** develop here. The former "held-upstream of Paper IV v1.0" scope gate is
+> **retired** -- there is no longer a separate Paper VIII to gate. All content (SymPy
+> derivation, generated fragments, notes, engine read-off) now lives in paper-04, folded
+> in with history via `git subtree` (paper-04 merge commit `bdc7bf3`). See `README.md`
+> (tombstone) and the merge handoff `2026-07-17-execute-iv-viii-merge-into-paper04`. The
+> status notes below are preserved for provenance only.
+
 > Project: Paper VIII -- The Electric Induced-Action Block
 
 This file is the project memory for Claude Code. Keep it updated so a
