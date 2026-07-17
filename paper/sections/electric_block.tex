@@ -184,23 +184,48 @@ directions confirms the vanishing split to $\sim10^{-15}$, guarding the symbolic
 proof. This is the verdict Paper~IV waits on: the framework predicts the
 \emph{absence} of gauge-sector vacuum birefringence about $(1,1,-1)$.
 
-\subsection{Scope of the verdict}
+\subsection{The optical axis, the speed anisotropy, and \texorpdfstring{$O_h$}{Oh}
+restoration}
 \label{subsec:scope_verdict}
 
-Two limits are stated plainly rather than hidden. First, the shared dispersion
-$\omega^2=k^{\!\top}\varepsilon\,k$ of Eq.~\eqref{eq:shared_dispersion} is
-direction-dependent: the common phase speed $v^2(\hat k)$ ranges over the
-eigenvalues of $\varepsilon$, i.e.\ a factor of about two between the axis and the
-perpendicular plane. This is a \emph{common-mode} speed anisotropy shared by both
-polarizations---not birefringence---but it is not small, and its restoration to
-isotropy under a full $O_h$ average is a separate question from the polarization
-verdict. (Notably, the $O_h$ average that would remove it also renders the
-birefringence cancellation trivial; the non-trivial, scale-independent
-cancellation proved here lives at the un-averaged operator level, where the speed
-anisotropy is also present.) Second, the relative normalization of $\varepsilon$
-and $\mu^{-1}$---the tick-weight and one-loop $1/g^2$ factors---is reported, not
-fixed; it sets the overall photon speed but, as shown, cannot affect the
-birefringence verdict. Accordingly the electric block and its covariant completion
-are recorded as complete, while the unconditional birefringence verdict is held
-partial pending the isotropy-restoration question and Paper~IV's full
-large-$N$ dispersion classification (Table~\ref{tab:audit}).
+Two features deserve statement rather than concealment. The first is geometric and
+explains where the optical axis comes from. As \emph{axes}, the three hop directions
+$V_1,V_2,V_3$ are three of the four cube body-diagonals; the optical axis
+$(1,1,-1)$ is precisely the \emph{fourth} diagonal, the one the hop set omits.
+Selecting three of the four diagonals breaks the cubic group $O_h$ down to the
+trigonal group $D_{3d}$ about the omitted diagonal, and a $D_{3d}$-invariant
+quadratic form is exactly uniaxial---which is why both blocks come out
+$\{\text{axis};4,4\}$. The axis is not imposed; it is the diagonal the lattice leaves
+out.
+
+The second is the shared dispersion $\omega^2=k^{\!\top}\varepsilon\,k$ of
+Eq.~\eqref{eq:shared_dispersion}, which is direction-dependent: the common phase
+speed $v^2(\hat k)$ ranges over the eigenvalues of $\varepsilon$, a factor of about
+two between the axis and the perpendicular plane. This is a \emph{common-mode} speed
+anisotropy shared by both polarizations---not birefringence---but it is not small.
+Its status is clarified by the same geometry. There are four diagonal domains, one
+trigonal about each body-diagonal; averaging the two blocks over them restores full
+cubic symmetry exactly,
+%
+\begin{equation}
+    \label{eq:oh_average}
+    \input{sections/generated/oh_average}
+\end{equation}
+%
+so the $O_h$-restored medium is isotropic Maxwell, with no speed anisotropy. The
+decisive observation is that the adjugate relation---and hence the birefringence
+cancellation---holds \emph{in every single domain}, non-trivially, and equally after
+averaging, trivially. The cancellation is therefore robust to whether the physical
+vacuum is a single trigonal domain or an $O_h$-restored average; the speed anisotropy
+is the one feature that distinguishes the two, and however that question resolves it
+cannot revive birefringence. Deciding it---single-domain, with the factor-of-two
+speed anisotropy as a genuine (and observationally constrained) prediction, versus
+$O_h$-restored and isotropic---is a question about vacuum structure separate from,
+and not gating, the polarization verdict. (A remaining bookkeeping item, immaterial
+to all of the above, is the relative normalization of $\varepsilon$ and $\mu^{-1}$:
+the tick-weight and one-loop $1/g^2$ factors set the overall photon speed but, being
+an independent rescaling of each block, cannot affect the birefringence verdict.)
+Accordingly the electric block and its covariant completion are recorded as complete,
+while the unconditional birefringence verdict is held partial pending this
+vacuum-structure question and Paper~IV's full large-$N$ dispersion classification
+(Table~\ref{tab:audit}).

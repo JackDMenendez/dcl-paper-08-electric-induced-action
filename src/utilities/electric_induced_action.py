@@ -200,6 +200,58 @@ def adjugate_is_general() -> bool:
     return sp.simplify(Qg - Pg.adjugate()) == sp.zeros(3, 3)
 
 
+# --- Origin of the optical axis + O_h isotropy restoration -------------------
+# The four cube body-diagonals. The A=1 hop set (V_HOPS) is three of them, and
+# the optical axis (1,1,-1) IS the fourth -- the one absent from the hop set.
+# That absence breaks cubic O_h to trigonal D_3d about (1,1,-1) and is the
+# geometric origin of the uniaxial induced tensors.
+BODY_DIAGONALS = [sp.Matrix(d) for d in
+                  [(1, 1, 1), (1, 1, -1), (1, -1, 1), (1, -1, -1)]]
+
+
+def _P_from(vs: list[sp.Matrix]) -> sp.Matrix:
+    P = sp.zeros(3, 3)
+    for v in vs:
+        P += _outer(v)
+    return P
+
+
+def _QB_from(vs: list[sp.Matrix]) -> sp.Matrix:
+    Q = sp.zeros(3, 3)
+    for i, j in [(0, 1), (0, 2), (1, 2)]:
+        Q += _outer(_cross(vs[i], vs[j]))
+    return Q
+
+
+def optical_axis_is_fourth_diagonal() -> bool:
+    """PASS iff the actual A=1 electric block equals the diagonal-domain that
+    OMITS ``(1,1,-1)`` -- i.e. the lattice's three hop axes are three of the four
+    cube body-diagonals and the optical axis is the fourth, missing one."""
+    omit_axis = BODY_DIAGONALS[1]                       # (1,1,-1)
+    dirs = [d for d in BODY_DIAGONALS if d != omit_axis]
+    same_block = sp.simplify(_P_from(dirs) - derive_electric_block()) == sp.zeros(3, 3)
+    axis_is_omitted = sp.simplify(
+        derive_electric_block() * omit_axis - 1 * omit_axis) == sp.zeros(3, 1)
+    return bool(same_block and axis_is_omitted)
+
+
+def oh_domain_average() -> tuple[sp.Matrix, sp.Matrix]:
+    """Average the electric and magnetic blocks over the four 'diagonal domains'
+    (the four ways to use three of the four body-diagonals as hop directions,
+    each trigonal about the omitted diagonal). Returns ``(<P>, <Q_B>)``; both are
+    ISOTROPIC (``3I``, ``8I``), so O_h is restored by the domain average and the
+    common-mode speed anisotropy averages away. (The birefringence cancellation,
+    by contrast, already holds in every single domain via the adjugate relation,
+    so it is robust to whether or not this averaging is physical.)"""
+    Psum = sp.zeros(3, 3)
+    Qsum = sp.zeros(3, 3)
+    for omit in range(4):
+        dirs = [BODY_DIAGONALS[i] for i in range(4) if i != omit]
+        Psum += _P_from(dirs)
+        Qsum += _QB_from(dirs)
+    return sp.Rational(1, 4) * Psum, sp.Rational(1, 4) * Qsum
+
+
 # --- Birefringence verdict: photon dispersion --------------------------------
 def _cross_matrix(k: sp.Matrix) -> sp.Matrix:
     """``[k]_x`` such that ``[k]_x v = k x v`` -- the curl operator for a plane
@@ -347,6 +399,11 @@ def write_latex_fragments() -> list[str]:
           r"\varepsilon\,k\bigr)^2")
     _emit("shared_dispersion.tex",
           r"\omega^2 = k^{\!\top}\!\varepsilon\,k = " + sp.latex(shared))
+
+    Pbar, Qbar = oh_domain_average()
+    _emit("oh_average.tex",
+          r"\langle\varepsilon\rangle = " + sp.latex(Pbar, mat_delim="[")
+          + r",\qquad \langle\mu^{-1}\rangle = " + sp.latex(Qbar, mat_delim="["))
     return written
 
 
@@ -372,6 +429,15 @@ def main() -> None:
     print(f"[COVARIANT] mu^-1 = Q_B = adj(P): {'PASS' if holds else 'FAIL'} "
           f"(det P = {detP}); holds for ANY hop vectors: "
           f"{'PASS' if general else 'FAIL'}")
+
+    axis_geom = optical_axis_is_fourth_diagonal()
+    Pbar, Qbar = oh_domain_average()
+    oh_ok = (Pbar == 3 * sp.eye(3)) and (Qbar == 8 * sp.eye(3))
+    print(f"[GEOMETRY] optical axis (1,1,-1) IS the 4th cube body-diagonal, absent "
+          f"from the hop set (-> trigonal D_3d): {'PASS' if axis_geom else 'FAIL'}")
+    print(f"           O_h restoration -- 4-domain average <P>=3I, <Q_B>=8I "
+          f"isotropic: {'PASS' if oh_ok else 'FAIL'} (speed anisotropy averages "
+          f"away; birefringence already null per-domain via adj)")
 
     is_double, shared = photon_dispersion_double_root()
     split = birefringence_split()
@@ -399,7 +465,7 @@ def main() -> None:
               f"{os.path.relpath(path, os.path.join(_HERE, '..', '..'))}")
 
     ok = (anchor and electric and holds and general and is_double and cancels
-          and sweep_ok)
+          and sweep_ok and axis_geom and oh_ok)
     print("=" * 60)
     print(f"CONDITIONAL CHECKS: {'ALL PASS' if ok else 'CHECK FAILED'}  "
           f"(eps=P engine-confirmed by exp_01; verdict conditional on the "

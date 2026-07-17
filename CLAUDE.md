@@ -32,11 +32,18 @@ birefringence CANCELS** -- prefactor-independent and geometry-general. Verifier:
    assumed). This is why the electric-block + covariant-completion rows are PASS.
    (Referee-audited 2026-07-16: an earlier version computed `P` off a synthetic field and
    only *looked* like an engine test; this was rewritten to genuinely read `hop.step`.)
-2. **STILL OPEN.** The shared dispersion `w^2 = k^T eps k` gives a **factor-~2 directional
-   anisotropy of the vacuum `c`** (common to both polarizations -- NOT birefringence, but
-   not small). Its `O_h`-isotropy restoration is a separate open question; do not sell the
-   null as a clean polarimetry result. This (plus Paper IV's large-N dispersion
-   classification) is why the birefringence-verdict row stays PART.
+2. **SHARPENED + DECOUPLED (2026-07-16).** The shared dispersion `w^2 = k^T eps k` gives a
+   **factor-~2 directional anisotropy of the vacuum `c`** (common to both polarizations --
+   NOT birefringence, but not small). Analysis in
+   `notes/speed_anisotropy_and_isotropy_restoration.md` (verified in the utility): the
+   optical axis `(1,1,-1)` IS the 4th cube body-diagonal, absent from the 3 hop axes, so the
+   lattice is trigonal `D_3d`, not `O_h`. Averaging the blocks over the four diagonal domains
+   restores `O_h` exactly (`<eps>=3I`, `<mu^-1>=8I`) -- the anisotropy averages away. Crucially
+   the adjugate/birefringence cancellation holds in **every single domain** AND after the
+   average, so it is **decoupled** from the speed anisotropy: however the vacuum-structure
+   question resolves (single trigonal domain vs `O_h`-restored), birefringence still cancels.
+   The verdict row stays PART for the *vacuum-structure* question + Paper IV's large-N
+   classification -- NOT for any doubt about the cancellation.
 
 **Headline claim (to be earned):** the A=1 lattice has a well-defined *electric*
 induced-action block -- a permittivity `epsilon` and the covariant completion of the
@@ -186,5 +193,9 @@ See `release_notes/README.md`. Summary: CI green -> update `CITATION.cff` -> dra
 
 `notes/README.md` -- conventions for notes/.
 
-- `notes/electric_block_derivation.md` -- the derivation plan: the E/B asymmetry, why no
-  electric holonomy, the two method candidates, and the consistency anchor. Start here.
+- `notes/electric_block_derivation.md` -- the derivation plan + result: the E/B asymmetry,
+  the temporal-plaquette electric block, the adjugate completion, and the birefringence
+  verdict. Start here.
+- `notes/speed_anisotropy_and_isotropy_restoration.md` -- the one open caveat, sharpened:
+  the optical axis is the 4th cube body-diagonal (trigonal `D_3d`); the `O_h` domain-average
+  restores isotropy; the birefringence cancellation is decoupled from the speed anisotropy.
