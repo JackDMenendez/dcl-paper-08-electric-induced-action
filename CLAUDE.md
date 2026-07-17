@@ -21,21 +21,28 @@ birefringence CANCELS** -- prefactor-independent and geometry-general. Verifier:
 `src/utilities/electric_induced_action.py` (all conditional checks PASS) + numeric sweep
 (2e4 random `k`, split `< 1e-14`).
 
-**Two honest gaps keep this at PART, not PASS** (referee findings, do NOT overclaim):
-1. `eps = P` is analytic-only -- derived from the standard temporal-plaquette holonomy but
-   with **no engine-level extraction** (the mirror of dcl-core `exp_04`). The temporal
-   holonomy is `(V_a . E) * a_t`, not unit weight; `a_t = 1` is set only to display the
-   structure. Closing this (a dcl-core experiment reading `P` off the engine's on-site
-   `V(x)` + Peierls hop) is the path to the unconditional verdict.
-2. The shared dispersion `w^2 = k^T eps k` gives a **factor-~2 directional anisotropy of
-   the vacuum `c`** (common to both polarizations -- NOT birefringence, but not small). Its
-   `O_h`-isotropy restoration is a separate open question; do not sell the null as a clean
-   polarimetry result.
+**Status of the referee's two gaps:**
+1. **CLOSED (2026-07-16).** `eps = P` is now read off the **real engine evolution**, not
+   analytic-only: `src/experiments/exp_01_electric_permittivity_extraction.py` recovers
+   `delta_phi = omega + V(x)` from `HopOperator.step`'s output (`Im(psi_R_new)/psi_R =
+   sin(delta_phi/2)`, to 1e-19) and reads `P = {1,4,4}` (axis suppressed) off THAT — so a
+   sign error or dropped `external_potential` in the tick rule would break it. It also
+   confirms `P`,`Q_B` commute + reciprocal (adjugate structure), that `omega` cancels in
+   the loop (P is mass-independent), and that the tick weight is `a_t=1` (measured, not
+   assumed). This is why the electric-block + covariant-completion rows are PASS.
+   (Referee-audited 2026-07-16: an earlier version computed `P` off a synthetic field and
+   only *looked* like an engine test; this was rewritten to genuinely read `hop.step`.)
+2. **STILL OPEN.** The shared dispersion `w^2 = k^T eps k` gives a **factor-~2 directional
+   anisotropy of the vacuum `c`** (common to both polarizations -- NOT birefringence, but
+   not small). Its `O_h`-isotropy restoration is a separate open question; do not sell the
+   null as a clean polarimetry result. This (plus Paper IV's large-N dispersion
+   classification) is why the birefringence-verdict row stays PART.
 
 **Headline claim (to be earned):** the A=1 lattice has a well-defined *electric*
 induced-action block -- a permittivity `epsilon` and the covariant completion of the
 gauge response -- derivable from the tick rule, matching the already-exact *magnetic*
-block. **Now derived analytically (PART); engine confirmation outstanding.**
+block. **Now derived analytically AND engine-confirmed (block + completion PASS); only the
+unconditional birefringence verdict remains PART.**
 
 **Why this paper exists.** Paper IV's gauge-sector photon-dispersion birefringence
 *verdict* cannot be rendered without it. The engine couples E and B **asymmetrically**:
@@ -57,17 +64,23 @@ not a verdict.
   electric/temporal-plaquette sector.
 - **(b)** an action-level spectral (`Tr ln T`) probe.
 
-**Audit rows:** the magnetic anchor is `PASS` (inherited/verified, now also derived from
-first principles here); the electric block, the covariant `(epsilon, mu^{-1})` completion,
-and the birefringence verdict are all `PART` (analytic + symbolic + numeric, gaps
-documented) -- upgraded from `STUB` on 2026-07-16.
+**Audit rows:** magnetic anchor `PASS`; electric block and covariant `(epsilon, mu^{-1})`
+completion now `PASS` (analytic + symbolic + **engine-extracted**, `exp_01`); birefringence
+verdict `PART` (conditional proven + `eps=P` engine-verified; unconditional pends the speed
+anisotropy + Paper IV large-N). Upgraded from all-`STUB` on 2026-07-16.
 
-**Next concrete action:** the analytic derivation is done. The path to PASS is the
-**engine cross-check (mirror of dcl-core `exp_04`)**: extract `epsilon = P` numerically from
-core3d's on-site `V(x)` coupling combined with the Peierls hop, confirming the tick rule
-realizes the temporal plaquette with holonomy `~ V_a . E`. This is a dcl-core experiment --
-likely a handoff to a dcl-core session. Secondary: the paper body is still scaffold
-placeholders; the derivation section presenting the above is unwritten.
+**Verification code lives in THIS paper, importing dcl-core as the engine** (not in
+dcl-core): `src/experiments/exp_01_...` imports `dcl_core.core3d` and reads `P` off the
+engine's `external_potential`, the same way it re-derives the magnetic `Q` in-repo. dcl-core
+needs no new engine work (the electric `external_potential` coupling already exists); the
+only tidy-up would be upstreaming a `uniform_E_potential` sibling into `core3d.gauge` (a
+5-line helper, currently local to `exp_01`) -- optional, not blocking.
+
+**Next concrete action:** the derivation + engine cross-check are done. Remaining:
+(1) the paper body is still scaffold placeholders -- write the derivation section
+(hand-written prose `\input`-ing the generated fragments); (2) the factor-~2 common-mode
+speed-anisotropy / `O_h` isotropy-restoration question, which gates lifting the verdict row
+to PASS and feeds Paper IV's large-N dispersion classification.
 
 **Scope gate:** this paper is HELD-upstream of Paper IV v1.0 (PM ruling 2026-07-09):
 Paper IV v1.0 waits on this verdict. Board issue #23 (project 6); blocks #13/#17/#18/#19.
@@ -103,9 +116,9 @@ derivation, a binary physical consequence.
 | Row | Status | What it claims |
 |---|---|---|
 | Magnetic induced-action `Q`-tensor `{4,4,16}` (anchor) | PASS | Paper I App. B / dcl-core `exp_04`; `max\|Q - Paper_I_Q\| = 0`; re-derived here |
-| Electric induced-action block `epsilon = P = {1,4,4}`, axis suppressed | PART | temporal-plaquette holonomy; analytic + symbolic, matches `exp_03a` sign. Gap: no engine extraction (mirror of `exp_04`) |
-| Covariant completion `mu^{-1} = Q_B = adj(epsilon)` | PART | adjugate identity proven for general vectors. Gap: relative `eps`:`mu^{-1}` normalization (`a_t`, `1/g^2`) |
-| Gauge-sector birefringence verdict: **cancels** (conditional) | PART | double-root theorem + 2e4-`k` numeric; gates Paper IV #18/#17/#19. Gaps: unconditional needs `eps=P` engine-verified; residual speed anisotropy |
+| Electric induced-action block `epsilon = P = {1,4,4}`, axis suppressed | PASS | analytic + symbolic + **read off `HopOperator.step`** (`exp_01`): `delta_phi=omega+V` recovered to 1e-19, `omega` cancels in loop, `a_t=1` verified; matches `exp_03a` sign |
+| Covariant completion `mu^{-1} = Q_B = adj(epsilon)` | PASS | adjugate identity proven for general vectors; `exp_01` confirms `P`,`Q_B` commute + reciprocal from one engine. Relative `eps`:`mu^{-1}` scale (`a_t`,`1/g^2`) reported not fixed |
+| Gauge-sector birefringence verdict: **cancels** (conditional) | PART | double-root theorem + 2e4-`k` numeric; `eps=P` engine-verified (`exp_01`); gates Paper IV #18/#17/#19. Remaining: residual factor-~2 speed anisotropy (isotropy restoration) + Paper IV large-N dispersion |
 
 Mirror of `paper/sections/audit_table.tex` -- update both together. The claim-auditor
 agent treats `audit_table.tex` as the authority.

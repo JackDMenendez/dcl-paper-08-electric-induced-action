@@ -61,19 +61,23 @@ eigenvalues $\{1,4,4\}$, axis $(1,1,-1)$ suppressed)
     & On-site coupling $\delta\phi=\omega+V(x)$ IS a temporal link; the temporal
       plaquette (one hop $V_a$ + tick) closes, holonomy $(V_a\!\cdot\!E)\,a_t$
     & Isotropic $\varepsilon$ after $O_h$ averaging (target)
-    & Analytic + symbolic (\texttt{electric\_induced\_action.py}); axis-suppression sign
-      matches Paper~IV \texttt{exp\_03a}. \emph{Gap:} no engine-level extraction yet
-      (the mirror of dcl-core \texttt{exp\_04}); $a_t$/$1/g^2$ normalization not fixed
-    & \texttt{PART} \\
+    & Analytic + symbolic (\texttt{electric\_induced\_action.py}) AND read off the engine's
+      real \texttt{HopOperator.step} output (\texttt{exp\_01}, mirror of dcl-core
+      \texttt{exp\_04}): $\delta\phi{=}\omega{+}V$ recovered to $10^{-19}$, $P{=}\{1,4,4\}$
+      axis suppressed (sign matches \texttt{exp\_03a}), $\omega$ cancels in the loop, tick
+      weight $a_t{=}1$ verified
+    & \texttt{PASS} \\
 
 % ── Covariant completion ────────────────────────────────────────────
 Covariant completion: $\mu^{-1} = Q_B = \operatorname{adj}(\varepsilon)$
     & Magnetic block IS the adjugate of the electric block:
       $\sum_{a<b}(V_a\!\times\!V_b)^{\otimes 2}=\operatorname{adj}(\sum_a V_a^{\otimes 2})$
     & Lorentz-covariant $F_{\mu\nu}F^{\mu\nu}$ in the continuum
-    & Adjugate identity proven for general hop vectors (\texttt{electric\_induced\_action.py}).
-      \emph{Gap:} relative $\varepsilon$:$\mu^{-1}$ normalization ($a_t$, $1/g^2$) pending
-    & \texttt{PART} \\
+    & Adjugate identity proven for general hop vectors; \texttt{exp\_01} confirms $P$, $Q_B$
+      from one engine \emph{commute} and are reciprocally ordered. \emph{Note:} the overall
+      relative $\varepsilon$:$\mu^{-1}$ scale ($a_t$, $1/g^2$) is reported, not fixed ---
+      immaterial to the verdict below
+    & \texttt{PASS} \\
 
 % ── Downstream verdict (gates Paper IV) ─────────────────────────────
 Gauge-sector birefringence verdict about $(1,1,-1)$: \emph{cancels} (conditional)
@@ -82,9 +86,9 @@ Gauge-sector birefringence verdict about $(1,1,-1)$: \emph{cancels} (conditional
       $\omega^2=k^{\!\top}\!\varepsilon k$; split $\propto|1\!\cdot\!16-4\!\cdot\!4|=0$
     & Absence of vacuum birefringence (prefactor-independent)
     & Conditional theorem proven + numeric ($2\times10^4$ random $k$, split $<10^{-14}$);
-      gates Paper~IV (\#18/\#17/\#19). \emph{Gaps:} unconditional form needs $\varepsilon=P$
-      engine-verified; a factor-$\sim$2 common-mode speed anisotropy remains (isotropy
-      restoration open)
+      $\varepsilon=P$ now engine-verified (\texttt{exp\_01}); gates Paper~IV (\#18/\#17/\#19).
+      \emph{Remaining:} a factor-$\sim$2 common-mode speed anisotropy (isotropy restoration
+      open) and Paper~IV's full $E{+}B$ dispersion classification (large-$N$)
     & \texttt{PART} \\
 
 \hline

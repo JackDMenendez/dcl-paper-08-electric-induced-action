@@ -34,14 +34,14 @@ point:
   verdict below this factor is immaterial to birefringence (it only renormalizes
   the common photon speed), but it is real and is NOT fixed here.
 
-  OUTSTANDING (the gap vs the magnetic anchor): ``Q_B`` is engine-verified --
-  dcl-core ``exp_04`` extracts it numerically from the actual Peierls phases
-  (``max|Q-Q_I|=0``). ``P`` here is derived from the standard temporal-plaquette
-  holonomy but has NO analogous engine-level extraction yet. The mirror of
-  ``exp_04`` -- read ``P`` off the engine's on-site ``V(x)`` coupling combined
-  with the Peierls hop -- is the concrete step that would move the electric-block
-  and verdict rows to PASS. Until then this block is analytic (PART), not
-  engine-confirmed.
+  ENGINE-CONFIRMED: ``P`` is no longer analytic-only. The mirror of ``exp_04`` --
+  ``src/experiments/exp_01_electric_permittivity_extraction.py`` -- reads ``P``
+  off the engine's on-site ``external_potential`` coupling
+  (``delta_phi = omega + V(x)``), recovering ``{1,4,4}`` with the axis suppressed,
+  confirming ``P`` and ``Q_B`` commute + are reciprocally ordered (the adjugate
+  structure) from one engine, and reporting the tick weight ``a_t`` explicitly.
+  What remains reported-not-fixed is the electric-vs-magnetic RELATIVE
+  normalization (``a_t``, ``1/g^2``) -- immaterial to the verdict below.
 
 * COVARIANT COMPLETION. The two blocks are not independent: for any three hop
   vectors,
@@ -162,9 +162,10 @@ def derive_electric_block() -> sp.Matrix:
     optical axis ``(1,1,-1)`` SUPPRESSED to 1, the perpendicular plane at 4
     (mirror of the magnetic ``{4, 4, 16}``).
 
-    STATUS: analytic (PART). Unlike the magnetic ``Q_B`` (engine-verified by
-    dcl-core ``exp_04``), ``P`` has no engine-level extraction yet -- that mirror
-    experiment is the gap between here and PASS."""
+    STATUS: engine-confirmed (PASS). ``exp_01`` extracts this same ``P`` off the
+    engine's on-site ``external_potential`` coupling (the mirror of dcl-core
+    ``exp_04``). Only the electric-vs-magnetic relative scale (``a_t``, ``1/g^2``)
+    is reported-not-fixed, and it is immaterial to the birefringence verdict."""
     P = sp.zeros(3, 3)
     for v in V_HOPS:
         P += _outer(v)
@@ -261,6 +262,26 @@ def photon_dispersion_double_root() -> tuple[bool, sp.Expr]:
     return bool(is_double), shared
 
 
+def numeric_birefringence_sweep(n: int = 20000, seed: int = 0) -> float:
+    """Independent NUMERIC guard on the symbolic double-root proof: over ``n``
+    random propagation directions, return the maximum polarization split of the
+    two transverse roots of ``det(K Q_B K + w^2 P) = 0``. Expected ~1e-14 (they
+    coincide). Guards against a SymPy error in the symbolic proof above."""
+    import numpy as _np
+    P = _np.array(derive_electric_block().tolist(), dtype=float)
+    Q = _np.array(derive_magnetic_Q().tolist(), dtype=float)
+    rng = _np.random.default_rng(seed)
+    worst = 0.0
+    for _ in range(n):
+        k = rng.standard_normal(3)
+        k /= _np.linalg.norm(k)
+        K = _np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+        # (K Q K) E = -w^2 P E  ->  eig of P^{-1}(-K Q K); top two are transverse.
+        w2 = _np.sort(_np.real(_np.linalg.eigvals(_np.linalg.solve(P, -K @ Q @ K))))
+        worst = max(worst, abs(w2[2] - w2[1]))
+    return worst
+
+
 # --- Anchor gate -------------------------------------------------------------
 def verify_magnetic_anchor() -> bool:
     """PASS iff the first-principles ``Q_B`` equals the inherited anchor and
@@ -346,19 +367,25 @@ def main() -> None:
           f"= ({ea}*{na} - {ep}*{np_}) = {ea * na - ep * np_}")
     print(f"           => birefringence CANCELS (prefactor-independent): "
           f"{'PASS' if cancels else 'FAIL'}")
+    sweep = numeric_birefringence_sweep()
+    sweep_ok = sweep < 1e-10
+    print(f"           numeric sweep (2e4 random k): max split = {sweep:.2e} "
+          f"{'PASS' if sweep_ok else 'FAIL'}")
     print(f"           v^2(k) in [{ea}, {ep}]: common-mode speed anisotropy "
           f"remains (NOT birefringence; see notes).")
-    print("           Unconditional verdict pending engine extraction of eps=P "
-          "(mirror of exp_04).")
+    print("           eps=P engine-verified by exp_01; unconditional verdict still "
+          "pends the speed-anisotropy story + Paper IV large-N (row stays PART).")
 
     for path in write_latex_fragments():
         print(f"[LATEX   ] generated "
               f"{os.path.relpath(path, os.path.join(_HERE, '..', '..'))}")
 
-    ok = anchor and electric and holds and general and is_double and cancels
+    ok = (anchor and electric and holds and general and is_double and cancels
+          and sweep_ok)
     print("=" * 60)
     print(f"CONDITIONAL CHECKS: {'ALL PASS' if ok else 'CHECK FAILED'}  "
-          f"(analytic; electric block PART pending engine cross-check)")
+          f"(eps=P engine-confirmed by exp_01; verdict conditional on the "
+          f"eps,mu^-1 identification)")
     if not ok:
         raise SystemExit("A derivation check failed.")
 

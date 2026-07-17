@@ -1,8 +1,10 @@
 # The electric induced-action block: derivation plan + result
 
-**Status:** DERIVED — analytic (2026-07-16). Method (a) succeeds; birefringence verdict
-= CANCELS **conditionally** (airtight given `eps=P`; `eps=P` itself is analytic-only,
-pending an engine cross-check — see "Outstanding" below). Referee-reviewed 2026-07-16.
+**Status:** DERIVED + ENGINE-CONFIRMED (2026-07-16). Method (a) succeeds; `eps=P` is
+extracted off the real engine coupling by `exp_01` (mirror of `exp_04`). Birefringence
+verdict = CANCELS **conditionally** (airtight given `eps=P`, now engine-verified). Rows:
+electric block + covariant completion PASS; verdict PART (speed-anisotropy + Paper IV
+large-N remain). Referee-reviewed 2026-07-16.
 **Purpose:** Record the problem, the E/B asymmetry that forces new theory, the two
 candidate derivation methods, the consistency anchor, and now **the result** — so a
 focused session can start without re-deriving the context.
@@ -35,14 +37,23 @@ undetermined lattice-anisotropy factor `~(a_t/a^2)^2` and the open `1/g^2` prefa
 sets the common photon speed but, per the verdict, does not affect birefringence. We set
 `a_t = 1` to display the structure `P`.
 
-**Outstanding (the gap vs the magnetic anchor).** `Q_B` is *engine-verified*: dcl-core
-`exp_04` extracts it numerically from the actual Peierls phases (`max|Q-Q_I|=0`). `P` here
-is derived from the standard temporal-plaquette holonomy but has **no analogous engine-level
-extraction yet**, and it resolves Open Question #1 (does a gauge-covariant electric loop
-exist on the lattice?) by analogy with textbook LGT rather than by demonstrating the tick
-rule realizes it. The concrete step to close this — and move the electric-block/verdict rows
-to PASS — is the **mirror of `exp_04`**: read `P` off the engine's on-site `V(x)` coupling
-combined with the Peierls hop. This is a dcl-core experiment (likely a handoff).
+**Engine-confirmed (closed 2026-07-16).** The mirror of `exp_04` now exists **in this
+paper** — `src/experiments/exp_01_electric_permittivity_extraction.py` — importing
+`dcl_core.core3d` as the engine. It reads `P = {1,4,4}` (axis suppressed) off the engine's
+**real `HopOperator.step` output**: seeding a uniform real probe state, the on-site term
+`i sin(delta_phi/2) psi_R` is purely imaginary while the kinetic hop is real, so
+`Im(psi_R_new)/psi_R = sin(delta_phi/2)` recovers `delta_phi = omega + V(x)` (to 1e-19)
+straight from the tick evolution — a sign error or dropped `external_potential` would break
+it. From that it reads `P`, confirms `P`,`Q_B` (same engine, `exp_04` route) commute + are
+reciprocally ordered (adjugate structure), confirms `omega` cancels in the loop (`P`
+mass-independent), and verifies the tick weight `a_t=1` (measured via the fidelity check,
+not assumed). This is why the electric-block and covariant-completion rows are PASS.
+*(Referee-audited: an earlier draft computed `P` off a synthetic field and only looked like
+an engine test; it was rewritten to genuinely read `hop.step`.)* *(The experiment lives
+here, not in dcl-core: it backs this paper's audit row, so it belongs with the paper — the
+same reason the magnetic `Q` is re-derived in-repo. dcl-core needs no new engine work; a
+`uniform_E_potential` sibling for `core3d.gauge` is an optional upstream tidy-up, currently
+local to `exp_01`.)*
 
 **Covariant completion — the adjugate theorem.** The two blocks are not independent. For
 *any* three hop vectors,
@@ -163,12 +174,12 @@ results follow the same route. See `CLAUDE.md` "SymPy-generated equations".
 
 ## Open questions — status
 
-1. **Does a gauge-invariant electric loop exist?** YES, analytically — the on-site phase
-   advance is the temporal link; the temporal plaquette (one hop `V_a` + tick) closes.
-   Method (a) did not degenerate; no need for method (b). **But** this is resolved by
-   analogy with textbook LGT; the *engine-level* confirmation that the tick rule realizes it
-   as a gauge-covariant temporal link (the mirror of `exp_04`) is still **outstanding** (see
-   above). So: resolved in principle, not yet engine-verified.
+1. **Does a gauge-invariant electric loop exist?** YES — analytically (the on-site phase
+   advance is the temporal link; the temporal plaquette closes) **and engine-verified**:
+   `exp_01` reads `P` off `HopOperator.step`, confirms the recovered `delta_phi` reproduces
+   `omega + V(x)` (coupling fidelity) and that `omega` cancels in the loop. (Gauge
+   invariance of `V(x)-V(x+v_a)` under a global shift is trivial and is not separately
+   tested.) Resolved.
 2. **Does the residual anisotropy sit on the same `(1,1,-1)` axis as the magnetic block?**
    YES — `epsilon = P` and `mu^{-1} = Q_B` commute (share the eigenbasis): common axis
    `(1,1,-1)`, both isotropic (degenerate) in the perpendicular plane. **Still open:** the

@@ -1,0 +1,28 @@
+exp_01_electric_permittivity_extraction -- electric permittivity block P read off HopOperator.step
+generated: 2026-07-17T03:32:52.827870+00:00
+SHAPE=(16, 16, 16)  MARGIN=3  EPS=0.001
+
+P (density = E^T P E, E basis), from engine-recovered delta_phi=omega+V(x):
+[[ 3. -1.  1.]
+ [-1.  3.  1.]
+ [ 1.  1.  3.]]
+  eigenvalues: [1.0, 4.0, 4.0]   (structure {1,4,4}: OK)
+  suppressed axis (-> optical axis): [1.0, 1.0, -1.0]   (expect (1,1,-1): OK)
+
+Q_B (same engine, exp_04 route via uniform_B_potential, F basis):
+  eigenvalues: [4.0, 4.0, 16.0]   (Paper I {4,4,16})
+
+Adjugate structure (Q_B = adj(P)):
+  [P,Q_B] max = 4.44e-15  (commute -> shared eigenbasis: OK)
+  P-suppressed axis == Q_B-enhanced axis (reciprocal): OK
+
+Engine coupling: max|delta_phi_engine - (omega+V)| = 4.34e-19  (hop.step reproduces the applied potential, tick weight a_t=1: OK)
+Mass-term cancellation: max|P(omega=0) - P(omega=0.3)| = 1.73e-14  (omega cancels in the loop: OK)
+
+Confirmed AT ENGINE LEVEL (read off HopOperator.step, not re-asserted):
+the electric block STRUCTURE {1,4,4} (axis suppressed), unit tick weight
+a_t=1, and the adjugate relation to Q_B. NOT settled here (separate): the
+electric-vs-magnetic 1/g^2 relative coupling and the residual factor-~2
+common-mode speed anisotropy -- see src/utilities/electric_induced_action.py.
+
+exp_01_electric_permittivity_extraction PASS
