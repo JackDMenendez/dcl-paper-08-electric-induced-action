@@ -199,3 +199,7 @@ See `release_notes/README.md`. Summary: CI green -> update `CITATION.cff` -> dra
 - `notes/speed_anisotropy_and_isotropy_restoration.md` -- the one open caveat, sharpened:
   the optical axis is the 4th cube body-diagonal (trigonal `D_3d`); the `O_h` domain-average
   restores isotropy; the birefringence cancellation is decoupled from the speed anisotropy.
+- `notes/trlnT_prescription.md` -- method (b), worked out for Paper IV: the induced Maxwell
+  action is the 2nd-order eigenphase shift of the PHYSICAL band of `T(k)` only (both-band
+  `Tr ln T` is trivial since `det T = -sin^2(dphi/2)` is structure-factor-independent).
+  Verifier: `src/utilities/trlnT_prescription.py`.
